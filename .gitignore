@@ -1,0 +1,9 @@
+.DS_Store
+xcuserdata/
+build/
+DerivedData/
+*.xcuserstate
+.build/
+
+# 素材サイトなどから入手した元素材（容量が大きく、再配布の扱いも分からないため入れない）
+japan_material/
