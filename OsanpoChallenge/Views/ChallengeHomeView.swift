@@ -4,7 +4,7 @@ import SwiftUI
 struct ChallengeHomeView: View {
     let onStart: (CourseSummary) -> Void
 
-    @Environment(WalkDataStore.self) private var walkData
+    @Environment(WalkSessionStore.self) private var walkSessions
     @AppStorage(StorageKey.weeklyStepGoal) private var weeklyGoal = 50_000
     @Environment(ChallengeStore.self) private var challenges
     @State private var path: [CourseSummary] = []
@@ -62,8 +62,9 @@ struct ChallengeHomeView: View {
     }
 
     private var weekCard: some View {
-        StepGoalCard(title: "今週の歩数", steps: walkData.weekSteps, goal: weeklyGoal,
-                     distanceKm: walkData.weekKm, distanceTitle: "今週の距離")
+        // マイページの合計と同じく、お散歩中に歩いた分だけを数える
+        StepGoalCard(title: "今週の歩数", steps: walkSessions.thisWeek.steps, goal: weeklyGoal,
+                     distanceKm: walkSessions.thisWeek.km, distanceTitle: "今週の距離")
     }
 }
 
@@ -74,9 +75,7 @@ private struct CourseCard: View {
 
     var body: some View {
         HStack(spacing: 14) {
-            Image(course.imageName)
-                .resizable()
-                .scaledToFill()
+            CourseImage(name: course.imageName, tint: course.themeColor)
                 .frame(width: 112, height: 100)
                 .clipped()
             VStack(alignment: .leading, spacing: 6) {
@@ -106,7 +105,7 @@ private struct CourseCard: View {
                     .foregroundStyle(Color.navy.opacity(0.75))
                     .lineSpacing(2)
                     .fixedSize(horizontal: false, vertical: true)
-                Label("約 \(Int(course.distanceKm.rounded()).formatted()) km", systemImage: "mappin.and.ellipse")
+                Label("約 \(course.distanceText) km", systemImage: "mappin.and.ellipse")
                     .font(.caption.weight(.medium))
                     .foregroundStyle(Color.navy)
             }
@@ -124,5 +123,5 @@ private struct CourseCard: View {
 
 #Preview {
     ChallengeHomeView(onStart: { _ in })
-        .environment(WalkDataStore())
+        .environment(WalkSessionStore())
 }

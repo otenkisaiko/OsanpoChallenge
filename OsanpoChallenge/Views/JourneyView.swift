@@ -4,7 +4,6 @@ import SwiftUI
 struct JourneyView: View {
     let course: Course
     let progress: JourneyProgress
-    let onConnect: () async -> Void
 
     enum Mode: CaseIterable {
         case map, list
@@ -17,9 +16,7 @@ struct JourneyView: View {
         }
     }
 
-    @Environment(WalkDataStore.self) private var walkData
     @Environment(WalkSessionStore.self) private var walkSessions
-    @AppStorage(StorageKey.healthConnected) private var healthConnected = false
     @AppStorage(StorageKey.dailyStepGoal) private var dailyGoal = 10_000
     @State private var mode = Mode.map
 
@@ -28,15 +25,11 @@ struct JourneyView: View {
             VStack(spacing: 12) {
                 ModePicker(mode: $mode, style: course.style)
                     .padding(.horizontal, 20)
-                if !healthConnected {
-                    connectBanner
-                        .padding(.horizontal, 20)
-                }
                 // 今日の「お散歩」で歩いた分
                 StepGoalCard(title: "今日の歩数", steps: walkSessions.today.steps, goal: dailyGoal,
                              distanceKm: walkSessions.today.km)
                     .padding(.horizontal, 20)
-                if let message = walkSessions.errorMessage ?? walkData.errorMessage {
+                if let message = walkSessions.errorMessage {
                     Text(message)
                         .font(.caption)
                         .foregroundStyle(.red)
@@ -72,25 +65,6 @@ struct JourneyView: View {
             .padding(.vertical, 12)
             .background(Color(hex: 0xFBFCFE))
         }
-    }
-
-    private var connectBanner: some View {
-        HStack(spacing: 12) {
-            Image(systemName: "heart.fill")
-                .foregroundStyle(.pink)
-            Text("ヘルスケアと連携すると、歩いた距離で旅が進みます")
-                .font(.caption)
-                .foregroundStyle(Color.navy)
-            Spacer(minLength: 0)
-            Button("連携する") {
-                Task { await onConnect() }
-            }
-            .font(.caption.bold())
-            .buttonStyle(.borderedProminent)
-            .tint(.navy)
-        }
-        .padding(12)
-        .background(.white, in: RoundedRectangle(cornerRadius: 14))
     }
 }
 

@@ -25,12 +25,15 @@ enum CheckpointStyle {
     case shukuba
     /// お遍路の札所（1番から「第1番札所」…）
     case fudasho
+    /// 鉄道の駅（山手線など。起点に戻ってくる一周のコース）
+    case eki
 
     /// 「宿場」「札所」
     var noun: String {
         switch self {
         case .shukuba: "宿場"
         case .fudasho: "札所"
+        case .eki: "駅"
         }
     }
 
@@ -42,6 +45,7 @@ enum CheckpointStyle {
         switch self {
         case .shukuba: "宿場帳"
         case .fudasho: "納経帳"
+        case .eki: "駅スタンプ帳"
         }
     }
 
@@ -50,6 +54,7 @@ enum CheckpointStyle {
         switch self {
         case .shukuba: "到着"
         case .fudasho: "参拝"
+        case .eki: "到着"
         }
     }
 
@@ -58,6 +63,7 @@ enum CheckpointStyle {
         switch self {
         case .shukuba: "踏破"
         case .fudasho: "結願"
+        case .eki: "一周"
         }
     }
 
@@ -66,6 +72,7 @@ enum CheckpointStyle {
         switch self {
         case .shukuba: "に到着しました！"
         case .fudasho: "を参拝しました！"
+        case .eki: "に到着しました！"
         }
     }
 
@@ -87,6 +94,10 @@ enum CheckpointStyle {
             return "\(station.id).\(station.name)"
         case .fudasho:
             return "\(station.number ?? station.id + 1)番 \(station.name)"
+        case .eki:
+            if station.isStart { return "出発 \(station.name)" }
+            if station.isGoal { return "一周 \(station.name)" }
+            return "\(station.id).\(station.name)"
         }
     }
 }
@@ -109,6 +120,9 @@ struct Course {
     let badgeText: String
 
     var totalDistance: Double { stations.last?.cumulativeDistance ?? 0 }
+
+    /// 起点に戻ってくる一周のコースか（山手線など）
+    var isLoop: Bool { stations.count > 1 && stations.first?.shortName == stations.last?.shortName }
 
     /// 宿場のコース
     /// - Parameters:
@@ -163,6 +177,9 @@ struct Course {
             case .fudasho:
                 number = index + 1
                 label = "第\(index + 1)番札所"
+            case .eki:
+                number = isStart || isGoal ? nil : index
+                label = isStart ? "出発" : (isGoal ? "一周" : "\(index)駅目")
             }
             stations.append(Station(
                 id: index,

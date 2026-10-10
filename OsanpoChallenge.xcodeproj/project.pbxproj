@@ -184,7 +184,6 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "お散歩チャレ";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "歩いた距離と歩数を読み込んで、旅のコースを進めるために使います。";
 				INFOPLIST_KEY_NSMotionUsageDescription = "お散歩中の歩数と距離を測るために使います。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -216,7 +215,6 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "お散歩チャレ";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "歩いた距離と歩数を読み込んで、旅のコースを進めるために使います。";
 				INFOPLIST_KEY_NSMotionUsageDescription = "お散歩中の歩数と距離を測るために使います。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

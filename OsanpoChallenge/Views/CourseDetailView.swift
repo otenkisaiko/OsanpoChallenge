@@ -13,9 +13,7 @@ struct CourseDetailView: View {
                 Color.clear
                     .frame(height: 340)
                     .overlay {
-                        Image(course.heroImageName)
-                            .resizable()
-                            .scaledToFill()
+                        CourseImage(name: course.heroImageName, tint: course.themeColor)
                     }
                     .clipped()
                 content
@@ -51,7 +49,7 @@ struct CourseDetailView: View {
             Divider().padding(.vertical, 18)
 
             if !course.highlightPlaces.isEmpty {
-                sectionTitle("主な宿場町")
+                sectionTitle(Course.find(course.id)?.style == .eki ? "主な駅" : "主な宿場町")
                 FlowLayout(spacing: 8) {
                     ForEach(course.highlightPlaces, id: \.self) { place in
                         Text(place)
@@ -96,7 +94,7 @@ struct CourseDetailView: View {
     private var stats: some View {
         HStack(spacing: 0) {
             StatItem(symbol: "mappin.and.ellipse", title: "全長",
-                     value: "約 \(Int(course.distanceKm.rounded()).formatted()) km", tint: course.themeColor)
+                     value: "約 \(course.distanceText) km", tint: course.themeColor)
             Divider().frame(height: 36)
             StatItem(symbol: "figure.walk", title: "目安日数",
                      value: "約 \(course.estimatedDays) 日", tint: course.themeColor)

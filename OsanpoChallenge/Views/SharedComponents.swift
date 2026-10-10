@@ -92,10 +92,8 @@ struct CourseIcon: View {
 
     var body: some View {
         Group {
-            if let name = course.summary?.imageName {
-                Image(name)
-                    .resizable()
-                    .scaledToFill()
+            if let summary = course.summary {
+                CourseImage(name: summary.imageName, tint: summary.themeColor)
             } else {
                 Color.paleBlue
             }
@@ -103,5 +101,26 @@ struct CourseIcon: View {
         .frame(width: size, height: size)
         .clipShape(Circle())
         .overlay(Circle().stroke(.white, lineWidth: 2))
+    }
+}
+
+/// コースの画像（まだ画像がないコースは、テーマ色の仮の絵）
+struct CourseImage: View {
+    let name: String
+    var tint: Color = .navy
+
+    var body: some View {
+        if UIImage(named: name) != nil {
+            Image(name)
+                .resizable()
+                .scaledToFill()
+        } else {
+            LinearGradient(colors: [tint.opacity(0.25), tint.opacity(0.55)], startPoint: .top, endPoint: .bottom)
+                .overlay {
+                    Image(systemName: "figure.walk")
+                        .font(.system(size: 28, weight: .semibold))
+                        .foregroundStyle(.white.opacity(0.9))
+                }
+        }
     }
 }

@@ -5,11 +5,9 @@ enum MainTab {
 }
 
 struct ContentView: View {
-    @Environment(WalkDataStore.self) private var walkData
     @Environment(WalkSessionStore.self) private var walkSessions
     @Environment(ChallengeStore.self) private var challenges
     @Environment(\.scenePhase) private var scenePhase
-    @AppStorage(StorageKey.healthConnected) private var healthConnected = false
     /// 起動するたびにオープニングから始める
     @State private var showingOpening = true
     @State private var arrivedStation: Station?
@@ -34,9 +32,6 @@ struct ContentView: View {
             if showingOpening {
                 OpeningView {
                     withAnimation { showingOpening = false }
-                    if !healthConnected {
-                        Task { await connectHealth() }
-                    }
                 }
                 .transition(.opacity)
             } else {
@@ -63,7 +58,7 @@ struct ContentView: View {
                 .tag(MainTab.home)
             Group {
                 if let course = activeCourse, let progress {
-                    JourneyView(course: course, progress: progress, onConnect: connectHealth)
+                    JourneyView(course: course, progress: progress)
                 } else {
                     NoChallengeView { selectedTab = .home }
                 }
@@ -92,16 +87,8 @@ struct ContentView: View {
         selectedTab = .map
     }
 
-    private func connectHealth() async {
-        await walkData.requestAuthorization()
-        healthConnected = true
-        await reload()
-    }
-
     private func reload() async {
         checkArrival()
-        guard healthConnected else { return }
-        await walkData.refresh()
     }
 
     /// 新しい宿場に着いていたらお祝い画面を出す

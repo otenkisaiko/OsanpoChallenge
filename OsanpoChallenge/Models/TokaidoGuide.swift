@@ -22,6 +22,7 @@ extension Course {
         switch id {
         case Course.tokaido.id: guides = TokaidoGuide.all
         case Course.ohenro.id: guides = OhenroGuide.all
+        case Course.yamanote.id: guides = YamanoteGuide.all
         default: return nil
         }
         return station.id < guides.count ? guides[station.id] : nil
@@ -29,7 +30,9 @@ extension Course {
 
     /// チェックポイントのイラスト名（Assets の画像名）
     func imageName(for station: Station) -> String {
-        String(format: "%@_station_%02d", id, station.id)
+        // 一周のコースのゴールは起点と同じ場所なので、起点の絵を使う
+        let index = isLoop && station.isGoal ? 0 : station.id
+        return String(format: "%@_station_%02d", id, index)
     }
 }
 

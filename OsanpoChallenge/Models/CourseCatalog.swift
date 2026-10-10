@@ -32,6 +32,11 @@ struct CourseSummary: Identifiable, Hashable {
     /// 目安日数の計算に使う、1日に歩く距離（1万歩 ≒ 7km）
     static let dailyPaceKm = 7.0
 
+    /// 「495」「1,069」、短いコースは「34.5」
+    var distanceText: String {
+        distanceKm < 100 ? distanceKm.kmText : Int(distanceKm.rounded()).formatted()
+    }
+
     /// 1日1万歩で歩いた場合の日数（5日単位に丸める）
     var estimatedDays: Int {
         max(5, Int((distanceKm / Self.dailyPaceKm / 5).rounded()) * 5)
@@ -40,7 +45,7 @@ struct CourseSummary: Identifiable, Hashable {
 
 extension Course {
     /// 遊べるコース（地図と宿場のデータがあるもの）
-    static let playable: [Course] = [.tokaido, .ohenro]
+    static let playable: [Course] = [.tokaido, .ohenro, .yamanote]
 
     static func find(_ id: String) -> Course? {
         playable.first { $0.id == id }
@@ -88,6 +93,22 @@ enum CourseCatalog {
                 .init(symbol: "mountain.2.fill", text: "四季折々の自然"),
                 .init(symbol: "face.smiling.inverse", text: "地域の人とのふれあい"),
             ],
+            isAvailable: true
+        ),
+        CourseSummary(
+            id: Course.yamanote.id,
+            title: Course.yamanote.title,
+            catchphrase: "東京の街を、\nぐるっと30駅めぐり",
+            category: "東京の街歩き",
+            description: "東京駅から外回りで、山手線の30駅をぐるっと一周。銀座、渋谷、新宿、池袋、上野……。東京のいろいろな街の顔を、自分の足でつないでいきましょう。はじめてのチャレンジにもおすすめです。",
+            distanceKm: Course.yamanote.totalDistance,
+            difficulty: "やさしい",
+            imageName: "course_yamanote",
+            heroImageName: "course_yamanote",
+            cardColor: Color(hex: 0xE6F4D8),
+            themeColor: Color(hex: 0x3E8E2E),
+            highlightPlaces: ["東京", "品川", "渋谷", "新宿", "池袋", "上野", "秋葉原"],
+            highlights: [],
             isAvailable: true
         ),
         CourseSummary(

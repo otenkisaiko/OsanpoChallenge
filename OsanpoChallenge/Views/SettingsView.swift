@@ -66,11 +66,11 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    Text("ホームの「今週の歩数」は、iPhoneの「ヘルスケア」から読み込みます。許可を変えるときは、ヘルスケアAppの「共有」→「Appとサービス」から設定してください。")
+                    Text("歩数と距離は、「お散歩をはじめる」〜「お散歩を終了する」の間だけ、iPhoneの歩数計（モーションとフィットネス）で測ります。記録はこのiPhoneの中だけに保存されます。許可を変えるときは、設定App →「プライバシーとセキュリティ」→「モーションとフィットネス」から設定してください。")
                         .font(.footnote)
                         .foregroundStyle(Color.sumi.opacity(0.85))
                 } header: {
-                    sectionHeader("ヘルスケア", systemImage: "heart")
+                    sectionHeader("歩数の計測", systemImage: "figure.walk")
                 }
 
                 #if DEBUG

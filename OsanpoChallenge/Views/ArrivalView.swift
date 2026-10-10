@@ -26,6 +26,7 @@ struct ArrivalView: View {
         switch course.style {
         case .shukuba: return "\(course.title)を歩きとおしました！"
         case .fudasho: return "八十八ヶ所を巡り終え、結願しました！"
+        case .eki: return "\(course.title)を達成しました！"
         }
     }
 

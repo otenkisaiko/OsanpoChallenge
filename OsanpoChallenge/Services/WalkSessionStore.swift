@@ -52,9 +52,19 @@ final class WalkSessionStore {
 
     /// 今日のお散歩の合計（コースに関係なく）
     var today: (steps: Int, km: Double) {
-        let startOfToday = Calendar.current.startOfDay(for: .now)
-        let todays = allSessions.filter { $0.start >= startOfToday }
-        return (todays.reduce(0) { $0 + $1.steps }, todays.reduce(0) { $0 + $1.km })
+        total(since: Calendar.current.startOfDay(for: .now))
+    }
+
+    /// 今週のお散歩の合計（コースに関係なく。週の始まりは端末の暦の設定に従う）
+    var thisWeek: (steps: Int, km: Double) {
+        let calendar = Calendar.current
+        let start = calendar.dateInterval(of: .weekOfYear, for: .now)?.start ?? calendar.startOfDay(for: .now)
+        return total(since: start)
+    }
+
+    private func total(since start: Date) -> (steps: Int, km: Double) {
+        let walks = allSessions.filter { $0.start >= start }
+        return (walks.reduce(0) { $0 + $1.steps }, walks.reduce(0) { $0 + $1.km })
     }
 
     func start(courseID: String) {

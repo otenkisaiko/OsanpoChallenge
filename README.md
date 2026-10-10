@@ -30,7 +30,7 @@
 | | |
 |---|---|
 | 言語・UI | Swift / SwiftUI（iOS 17 以降） |
-| 歩数・距離 | Core Motion（お散歩中の計測）、HealthKit（今週の歩数の表示・読み取りのみ） |
+| 歩数・距離 | Core Motion（お散歩中の計測。GPS・HealthKit は使わない） |
 | 保存 | UserDefaults（端末内のみ） |
 | 地図 | Illustrator で描いた地図とパスを座標に変換し、SwiftUI の Canvas で描画 |
 
@@ -39,7 +39,7 @@
 ```
 OsanpoChallenge/
 ├── Models/      コースのデータ（宿場・札所・距離・地図上の道）、解説、進み具合の計算
-├── Services/    お散歩の記録（Core Motion）、HealthKit、コースごとのチャレンジ記録
+├── Services/    お散歩の記録（Core Motion）、コースごとのチャレンジ記録
 └── Views/       各画面（ホーム、コース詳細、マップ、一覧、宿場帳、到着の演出、マイページ）
 tools/           イラストの取り込みなどの補助スクリプト
 ```
@@ -47,5 +47,5 @@ tools/           イラストの取り込みなどの補助スクリプト
 ## このリポジトリについて
 
 - この公開版には、**コードとアプリアイコンだけ**を入れています。宿場・札所のイラスト、地図、コース画像は含まれていないため、ビルドするとそれらの部分は空白（淡い色）で表示されます。
-- 実機で動かす場合は、Xcode の「Signing & Capabilities」で、ご自分の Team を選んでください（HealthKit を使用）。
+- 実機で動かす場合は、Xcode の「Signing & Capabilities」で、ご自分の Team を選んでください。
 - © 2026 otenkisaiko. All rights reserved.（コード・デザインの無断転載はご遠慮ください）
