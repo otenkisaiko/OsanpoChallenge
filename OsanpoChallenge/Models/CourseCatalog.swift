@@ -58,6 +58,9 @@ extension Course {
 }
 
 enum CourseCatalog {
+    /// ホームに並べるコース（準備中のコースは、できあがるまで出さない）
+    static var visible: [CourseSummary] { all.filter(\.isAvailable) }
+
     static let all: [CourseSummary] = [
         CourseSummary(
             id: Course.tokaido.id,

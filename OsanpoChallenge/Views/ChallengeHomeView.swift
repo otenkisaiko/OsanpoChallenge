@@ -45,7 +45,7 @@ struct ChallengeHomeView: View {
                     .foregroundStyle(Color.navy)
                     .padding(.top, 4)
                 VStack(spacing: 14) {
-                    ForEach(CourseCatalog.all) { course in
+                    ForEach(CourseCatalog.visible) { course in
                         NavigationLink(value: course) {
                             CourseCard(course: course, isActive: course.id == challenges.activeCourseID)
                         }
